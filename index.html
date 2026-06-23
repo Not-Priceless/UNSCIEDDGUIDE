@@ -250,15 +250,15 @@
 
 <script>
 const categories = [
-  { id: 'plastic',       label: 'Plastic',       img: 'plastic.png',       note: 'Trigger is always on the front face of the container.' },
-  { id: 'fuel',          label: 'Fuel',           img: 'fuel.png',          note: 'Trigger is always on the front face. Lay Down.' },
-  { id: 'cardboard',     label: 'Cardboard',      img: 'cardboard.png',     note: 'Trigger is inside the box. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
-  { id: 'cinderblock',   label: 'Cinder Block',   img: 'cinderblock.png',   note: 'They all look the same. Trigger is inside the block. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
-  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png',        note: 'Open the lid very carefully.' },
-  { id: 'plasticbarrel', label: 'Plastic Barrel', img: 'plasticbarrel.png', note: '2 Color Variations, Same trigger. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
-  { id: 'metalbarrel',   label: 'Metal Barrel',   img: 'metalbarrel.png',   note: 'They all look the same. Trigger is inside the barrel. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
-  { id: 'vests',         label: 'Vests',          img: 'vests.png',         note: 'Do NOT injure/shoot/kill subject — the vest will detonate. Can Stand/Crouch around the device but do NOT walk or run near the trigger.' },
-  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png',      note: 'Trigger is the same. Location may change.' },
+  { id: 'plastic',       label: 'Plastic',       img: 'plastic.png',       note: 'Trigger is always on the front face of the container. Look at the lone wire near top cylinder to quickly identify variation.' },
+  { id: 'fuel',          label: 'Fuel',           img: 'fuel.png',          note: 'Trigger is always on the front face. Look at the wire right after the long red wire to quickly identify variation.' },
+  { id: 'cardboard',     label: 'Cardboard',      img: 'cardboard.png',     note: 'Trigger is inside the box. Look at the center wires to quickly identify variation.' },
+  { id: 'cinderblock',   label: 'Cinder Block',   img: 'cinderblock.png',   note: 'Trigger is inside the block. Look at the wires bent in the corner to quickly identify variation.'},
+  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png',        note: 'Only Sapper should open lid. Best if these are detonated in place, or relocated and detonated. Look at the wire under the center black wire to quickly identify variation.' },
+  { id: 'plasticbarrel', label: 'Plastic Barrel', img: 'plasticbarrel.png', note: '2 Color Variations, Same trigger. Look at either top wire to quickly identify variation.' },
+  { id: 'metalbarrel',   label: 'Metal Barrel',   img: 'metalbarrel.png',   note: 'They all look the same. Trigger is inside the barrel. Look at the shortest wire on the side with the 2 long wires to quickly identify variation.' },
+  { id: 'vests',         label: 'Vests',          img: 'vests.png',         note: 'DO NOT injure/shoot/kill subject, the vest will detonate. Look at the two center wires to quickly identify variation.' },
+  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png',      note: 'DO NOT enter/move/start the vehicle, the VBIED will detonate. Trigger is the same. Location may change. Look at the two center wires to quickly identify variation.' },
 ];
 
 // Variation notes
@@ -287,11 +287,11 @@ const varNotes = {
   cinderblock_4: 'Not Moveable',
   cinderblock_5: 'Not Moveable',
 
-  bucket_1: '',
-  bucket_2: '',
-  bucket_3: '',
-  bucket_4: '',
-  bucket_5: '',
+  bucket_1: 'Not Moveable',
+  bucket_2: 'Moveable',
+  bucket_3: 'Moveable',
+  bucket_4: 'Moveable',
+  bucket_5: 'Not Moveable',
 
   plasticbarrel_1: 'Not Moveable',
   plasticbarrel_2: 'Not Moveable',
@@ -312,9 +312,9 @@ const varNotes = {
   vests_5: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
 
   vehicles_1: 'Not Moveable',
-  vehicles_2: 'Moveable',
-  vehicles_3: 'Moveable',
-  vehicles_4: 'Moveable',
+  vehicles_2: 'Not Moveable',
+  vehicles_3: 'Not Moveable',
+  vehicles_4: 'Not Moveable',
   vehicles_5: 'Not Moveable',
 };
 
