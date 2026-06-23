@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materials Catalog</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #111316;
+    --surface: #1c1f24;
+    --panel:   #24282f;
+    --border:  #2e333c;
+    --accent:  #e8a020;
+    --text:    #dde1e8;
+    --muted:   #7a8494;
+    --white:   #f0f2f5;
+  }
+
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    height: 58px;
+  }
+  header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--white);
+  }
+  header span {
+    background: var(--accent); color: #111;
+    font-size: .65rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 2px;
+  }
+
+  /* TABS */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; overflow-x: auto;
+    scrollbar-width: none; padding: 0 1rem;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0; background: none; border: none;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: 14px 18px 12px; cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color .15s, border-color .15s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* PAGES */
+  .page { display: none; padding: 2rem; }
+  .page.active { display: block; }
+
+  /* CATEGORY HERO */
+  .cat-hero {
+    display: flex; align-items: flex-start; gap: 2rem;
+    margin-bottom: 2.5rem; padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-hero-img {
+    width: 160px; height: 120px;
+    border-radius: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: .75rem;
+    flex-shrink: 0; overflow: hidden;
+  }
+  /* contain so full image shows, no cropping */
+  .cat-hero-img img { width: 100%; height: 100%; object-fit: contain; }
+  .cat-hero-info { flex: 1; }
+  .cat-hero h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.2rem; font-weight: 700;
+    letter-spacing: .05em; text-transform: uppercase;
+    color: var(--white); line-height: 1; margin-bottom: .5rem;
+  }
+  /* editable notes area on category page */
+  .cat-notes {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: .875rem;
+    line-height: 1.5;
+    padding: .6rem .8rem;
+    resize: vertical;
+    min-height: 56px;
+    margin-top: .4rem;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .cat-notes:focus { border-color: var(--accent); }
+  .cat-notes::placeholder { color: var(--muted); }
+
+  /* VARIATION GRID */
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .8rem; font-weight: 700;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .variations {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem;
+  }
+  .var-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden; cursor: pointer;
+    transition: border-color .15s, transform .15s;
+  }
+  .var-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .var-thumb {
+    width: 100%; height: 140px;
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: .75rem; overflow: hidden;
+  }
+  /* contain so full variation image shows */
+  .var-thumb img { width: 100%; height: 100%; object-fit: contain; }
+  .var-label {
+    padding: .65rem .9rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text);
+  }
+  .var-label .arrow { color: var(--accent); font-size: 1.1rem; }
+
+  /* DETAIL PAGE */
+  #detail-page { display: none; padding: 2rem; max-width: 720px; }
+  #detail-page.active { display: block; }
+
+  .back-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .9rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 7px 14px; border-radius: 4px; cursor: pointer;
+    margin-bottom: 1.8rem;
+    display: inline-flex; align-items: center; gap: .4rem;
+    transition: color .15s, border-color .15s;
+  }
+  .back-btn:hover { color: var(--text); border-color: var(--text); }
+
+  #detail-page h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--white); margin-bottom: .3rem;
+  }
+  #detail-page .detail-sub {
+    color: var(--muted); font-size: .85rem;
+    margin-bottom: .8rem;
+  }
+
+  /* editable notes on detail page */
+  .detail-notes {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: .875rem;
+    line-height: 1.5;
+    padding: .6rem .8rem;
+    resize: vertical;
+    min-height: 56px;
+    margin-bottom: 1.6rem;
+    outline: none;
+    transition: border-color .15s;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    margin-top: .4rem;
+  }
+  .detail-notes:focus { border-color: var(--accent); }
+  .detail-notes::placeholder { color: var(--muted); }
+
+  .notes-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .75rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: .35rem;
+    margin-top: 1rem;
+    display: block;
+  }
+
+  .steps-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .75rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .8rem;
+    display: block;
+    padding-top: .8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .checklist {
+    list-style: none;
+    display: flex; flex-direction: column; gap: .7rem;
+  }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .85rem 1.1rem;
+    line-height: 1.5; font-size: .95rem;
+  }
+  .checklist li .num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--accent); min-width: 24px; line-height: 1.2;
+  }
+
+  @media (max-width: 600px) {
+    .cat-hero { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .cat-hero-img { width: 100%; height: 160px; }
+    .tab-btn { padding: 12px 12px 10px; font-size: .9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Materials Catalog</h1>
+  <span>Reference</span>
+</header>
+
+<nav id="tab-bar">
+  <button class="tab-btn active" data-cat="plastic">Plastic</button>
+  <button class="tab-btn" data-cat="fuel">Fuel</button>
+  <button class="tab-btn" data-cat="cardboard">Cardboard</button>
+  <button class="tab-btn" data-cat="cinderblock">Cinder Block</button>
+  <button class="tab-btn" data-cat="bucket">Bucket</button>
+  <button class="tab-btn" data-cat="plasticbarrel">Plastic Barrel</button>
+  <button class="tab-btn" data-cat="metalbarrel">Metal Barrel</button>
+  <button class="tab-btn" data-cat="vests">Vests</button>
+  <button class="tab-btn" data-cat="vehicles">Vehicles</button>
+</nav>
+
+<div id="catalog-view"></div>
+
+<div id="detail-page">
+  <button class="back-btn" id="back-btn">&#8592; Back</button>
+  <h2 id="detail-title"></h2>
+  <p class="detail-sub" id="detail-sub"></p>
+  <span class="notes-label">Notes</span>
+  <textarea class="detail-notes" id="detail-notes" placeholder="Add notes for this variation…"></textarea>
+  <span class="steps-label">Steps</span>
+  <ul class="checklist" id="detail-list"></ul>
+</div>
+
+<script>
+const categories = [
+  { id: 'plastic',       label: 'Plastic',       img: 'plastic.png' },
+  { id: 'fuel',          label: 'Fuel',           img: 'fuel.png' },
+  { id: 'cardboard',     label: 'Cardboard',      img: 'cardboard.png' },
+  { id: 'cinderblock',   label: 'Cinder Block',   img: 'cinderblock.png' },
+  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png' },
+  { id: 'plasticbarrel', label: 'Plastic Barrel', img: 'plasticbarrel.png' },
+  { id: 'metalbarrel',   label: 'Metal Barrel',   img: 'metalbarrel.png' },
+  { id: 'vests',         label: 'Vests',          img: 'vests.png' },
+  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png' },
+];
+
+// All variation steps keyed by "catid_varN"
+const stepData = {
+  plastic_1:       ['Green','Long Black','Blue','Black','Red','Yellow','Long Red'],
+  plastic_2:       ['Long Red','Black','Yellow','Blue','Green','Red','Long Black'],
+  plastic_3:       ['Yellow','Long Black','Black','Blue','Green','Long Red','—'],
+  plastic_4:       ['Black','Blue','Long Red','Red','Long Black','Yellow','Green'],
+  plastic_5:       ['Green','Long Black','Black','Blue','Yellow','Long Red','Red'],
+
+  fuel_1:          ['Green','Black','Long Red','Yellow','Red','Blue','Long Black'],
+  fuel_2:          ['Long Black','Red','Long Red','Green','Black','Yellow','Blue'],
+  fuel_3:          ['Green','Red','Black','Blue','Yellow','Long Black','Long Red'],
+  fuel_4:          ['Long Black','Green','Blue','Red','Black','Yellow','Long Red'],
+  fuel_5:          ['Red','Blue','Yellow','Green','Long Red','Black','Long Black'],
+
+  cardboard_1:     ['Long Black','Long Red','Blue','Black','Yellow','Green','Red'],
+  cardboard_2:     ['Red','Black','Green','Long Black','Long Red','Blue','Yellow'],
+  cardboard_3:     ['Blue','Green','Long Red','Yellow','Black','Red','Long Black'],
+  cardboard_4:     ['Blue','Long Black','Red','Green','Black','Long Red','Yellow'],
+  cardboard_5:     ['Long Black','Green','Yellow','Long Red','Blue','Red','Black'],
+
+  cinderblock_1:   ['Long Red','Red','Black','Long Black','Green','Blue','Yellow'],
+  cinderblock_2:   ['Red','Yellow','Long Red','Blue','Black','Green','Long Black'],
+  cinderblock_3:   ['Black','Red','Blue','Green','Long Red','Yellow','Long Black'],
+  cinderblock_4:   ['Blue','Long Red','Yellow','Long Black','Red','Green','Black'],
+  cinderblock_5:   ['Black','Red','Blue','Yellow','Green','Long Black','Long Red'],
+
+  bucket_1:        ['Blue','Yellow','Red','Long Red','Black','Long Black','Green'],
+  bucket_2:        ['Long Red','Long Black','Yellow','Blue','Red','Green','Black'],
+  bucket_3:        ['Yellow','Red','Green','Long Black','Blue','Black','Long Red'],
+  bucket_4:        ['Red','Green','Yellow','Black','Long Black','Long Red','Blue'],
+  bucket_5:        ['Long Black','Long Red','Blue','Red','Yellow','Green','Black'],
+
+  plasticbarrel_1: ['Long Black','Black','Yellow','Blue','Long Red','Red','Green'],
+  plasticbarrel_2: ['Long Red','Blue','Black','Green','Long Black','Red','Yellow'],
+  plasticbarrel_3: ['Long Black','Blue','Yellow','Red','Green','Long Red','Black'],
+  plasticbarrel_4: ['Yellow','Red','Long Red','Green','Black','Blue','Long Black'],
+  plasticbarrel_5: ['Black','Long Red','Yellow','Green','Red','Blue','Long Black'],
+
+  metalbarrel_1:   ['Long Black','Green','Yellow','Black','Blue','Red','Long Red'],
+  metalbarrel_2:   ['Green','Black','Yellow','Long Red','Blue','Red','Long Black'],
+  metalbarrel_3:   ['Blue','Long Red','Red','Black','Long Black','Green','Yellow'],
+  metalbarrel_4:   ['Green','Yellow','Long Red','Long Black','Black','Blue','Red'],
+  metalbarrel_5:   ['Black','Long Black','Blue','Red','Green','Yellow','Long Red'],
+
+  vests_1:         ['Short Red','Green','Yellow','Short Black','Red','Black','Blue'],
+  vests_2:         ['Red','Yellow','Blue','Short Black','Black','Green','Short Red'],
+  vests_3:         ['Blue','Black','Yellow','Red','Short Red','Green','Short Black'],
+  vests_4:         ['Black','Short Red','Red','Short Black','Green','Yellow','Blue'],
+  vests_5:         ['Green','Red','Black','Yellow','Blue','Short Black','Short Red'],
+
+  vehicles_1:      ['Long Red','Red','Blue','Green','Black','Yellow','Long Black'],
+  vehicles_2:      ['Yellow','Green','Long Red','Red','Long Black','Blue','Black'],
+  vehicles_3:      ['Black','Long Black','Yellow','Red','Green','Blue','Long Red'],
+  vehicles_4:      ['Black','Long Black','Blue','Green','Red','Long Red','Yellow'],
+  vehicles_5:      ['Red','Long Black','Blue','Black','Yellow','Green','Long Red'],
+};
+
+function getSteps(catId, varNum) {
+  const key = `${catId}_${varNum}`;
+  return stepData[key] || Array(7).fill('—');
+}
+
+function varImg(catId, n) { return `${catId}_var${n}.png`; }
+
+// Build category pages
+const catalogView = document.getElementById('catalog-view');
+
+categories.forEach(cat => {
+  const page = document.createElement('div');
+  page.className = 'page';
+  page.id = `page-${cat.id}`;
+
+  page.innerHTML = `
+    <div class="cat-hero">
+      <div class="cat-hero-img">
+        <img src="${cat.img}" alt="${cat.label}" onerror="this.parentElement.textContent='${cat.img}'">
+      </div>
+      <div class="cat-hero-info">
+        <h2>${cat.label}</h2>
+        <textarea class="cat-notes" placeholder="Add notes about ${cat.label}…"></textarea>
+      </div>
+    </div>
+    <div class="section-label">Variations</div>
+    <div class="variations">
+      ${[1,2,3,4,5].map(n => `
+        <div class="var-card" data-cat="${cat.id}" data-label="${cat.label}" data-var="${n}">
+          <div class="var-thumb">
+            <img src="${varImg(cat.id, n)}" alt="Variation ${n}"
+                 onerror="this.parentElement.textContent='${varImg(cat.id, n)}'">
+          </div>
+          <div class="var-label">Variation ${n} <span class="arrow">›</span></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  catalogView.appendChild(page);
+});
+
+document.getElementById('page-plastic').classList.add('active');
+
+// Tab switching
+document.getElementById('tab-bar').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  const cat = btn.dataset.cat;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${cat}`).classList.add('active');
+  document.getElementById('detail-page').classList.remove('active');
+  catalogView.style.display = '';
+});
+
+// Variation card → detail
+catalogView.addEventListener('click', e => {
+  const card = e.target.closest('.var-card');
+  if (!card) return;
+
+  const catId    = card.dataset.cat;
+  const catLabel = card.dataset.label;
+  const varNum   = card.dataset.var;
+
+  document.getElementById('detail-title').textContent = `${catLabel} — Variation ${varNum}`;
+  document.getElementById('detail-sub').textContent   = `Category: ${catLabel}  ·  Variation ${varNum} of 5`;
+  document.getElementById('detail-notes').value = '';
+  document.getElementById('back-btn').dataset.cat = catId;
+
+  const steps = getSteps(catId, varNum);
+  const list = document.getElementById('detail-list');
+  list.innerHTML = steps.map((step, i) =>
+    `<li><span class="num">${i+1}</span>Step ${i+1} — ${step}</li>`
+  ).join('');
+
+  catalogView.style.display = 'none';
+  document.getElementById('detail-page').classList.add('active');
+});
+
+// Back button
+document.getElementById('back-btn').addEventListener('click', () => {
+  document.getElementById('detail-page').classList.remove('active');
+  catalogView.style.display = '';
+});
+</script>
+</body>
+</html>
