@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Materials Catalog</title>
+<title>88th Fleet IEDD</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@500;700&display=swap');
 
@@ -82,7 +82,6 @@
     color: var(--muted); font-size: .75rem;
     flex-shrink: 0; overflow: hidden;
   }
-  /* contain so full image shows, no cropping */
   .cat-hero-img img { width: 100%; height: 100%; object-fit: contain; }
   .cat-hero-info { flex: 1; }
   .cat-hero h2 {
@@ -91,25 +90,17 @@
     letter-spacing: .05em; text-transform: uppercase;
     color: var(--white); line-height: 1; margin-bottom: .5rem;
   }
-  /* editable notes area on category page */
-  .cat-notes {
-    width: 100%;
+  .cat-notes-static {
     background: var(--panel);
     border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
     border-radius: 5px;
     color: var(--text);
-    font-family: 'Inter', sans-serif;
     font-size: .875rem;
-    line-height: 1.5;
-    padding: .6rem .8rem;
-    resize: vertical;
-    min-height: 56px;
+    line-height: 1.6;
+    padding: .65rem .9rem;
     margin-top: .4rem;
-    outline: none;
-    transition: border-color .15s;
   }
-  .cat-notes:focus { border-color: var(--accent); }
-  .cat-notes::placeholder { color: var(--muted); }
 
   /* VARIATION GRID */
   .section-label {
@@ -120,7 +111,7 @@
   }
   .variations {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.2rem;
   }
   .var-card {
@@ -131,13 +122,19 @@
   }
   .var-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   .var-thumb {
-    width: 100%; height: 140px;
+    width: 100%; height: 210px;
     background: var(--surface);
     display: flex; align-items: center; justify-content: center;
     color: var(--muted); font-size: .75rem; overflow: hidden;
   }
-  /* contain so full variation image shows */
-  .var-thumb img { width: 100%; height: 100%; object-fit: contain; }
+  /* scale up image to 150% but still contain (no crop) */
+  .var-thumb img {
+    width: 150%;
+    height: 150%;
+    object-fit: contain;
+    max-width: 150%;
+    max-height: 150%;
+  }
   .var-label {
     padding: .65rem .9rem;
     font-family: 'Barlow Condensed', sans-serif;
@@ -176,36 +173,17 @@
     margin-bottom: .8rem;
   }
 
-  /* editable notes on detail page */
-  .detail-notes {
-    width: 100%;
+  .detail-notes-static {
     background: var(--panel);
     border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
     border-radius: 5px;
     color: var(--text);
-    font-family: 'Inter', sans-serif;
     font-size: .875rem;
-    line-height: 1.5;
-    padding: .6rem .8rem;
-    resize: vertical;
-    min-height: 56px;
+    line-height: 1.6;
+    padding: .65rem .9rem;
     margin-bottom: 1.6rem;
-    outline: none;
-    transition: border-color .15s;
-    border-top: 1px solid var(--border);
-    padding-top: 1rem;
     margin-top: .4rem;
-  }
-  .detail-notes:focus { border-color: var(--accent); }
-  .detail-notes::placeholder { color: var(--muted); }
-
-  .notes-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: .75rem; font-weight: 700;
-    letter-spacing: .13em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: .35rem;
-    margin-top: 1rem;
-    display: block;
   }
 
   .steps-label {
@@ -246,7 +224,7 @@
 <body>
 
 <header>
-  <h1>Materials Catalog</h1>
+  <h1>88th Fleet IEDD</h1>
   <span>Reference</span>
 </header>
 
@@ -268,26 +246,81 @@
   <button class="back-btn" id="back-btn">&#8592; Back</button>
   <h2 id="detail-title"></h2>
   <p class="detail-sub" id="detail-sub"></p>
-  <span class="notes-label">Notes</span>
-  <textarea class="detail-notes" id="detail-notes" placeholder="Add notes for this variation…"></textarea>
+  <div class="detail-notes-static" id="detail-notes"></div>
   <span class="steps-label">Steps</span>
   <ul class="checklist" id="detail-list"></ul>
 </div>
 
 <script>
 const categories = [
-  { id: 'plastic',       label: 'Plastic',       img: 'plastic.png' },
-  { id: 'fuel',          label: 'Fuel',           img: 'fuel.png' },
-  { id: 'cardboard',     label: 'Cardboard',      img: 'cardboard.png' },
-  { id: 'cinderblock',   label: 'Cinder Block',   img: 'cinderblock.png' },
-  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png' },
-  { id: 'plasticbarrel', label: 'Plastic Barrel', img: 'plasticbarrel.png' },
-  { id: 'metalbarrel',   label: 'Metal Barrel',   img: 'metalbarrel.png' },
-  { id: 'vests',         label: 'Vests',          img: 'vests.png' },
-  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png' },
+  { id: 'plastic',       label: 'Plastic',       img: 'plastic.png',       note: 'Trigger is always on the front face of the container.' },
+  { id: 'fuel',          label: 'Fuel',           img: 'fuel.png',          note: 'Trigger is always on the front face. Lay Down.' },
+  { id: 'cardboard',     label: 'Cardboard',      img: 'cardboard.png',     note: 'Trigger is inside the box. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
+  { id: 'cinderblock',   label: 'Cinder Block',   img: 'cinderblock.png',   note: 'They all look the same. Trigger is inside the block. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
+  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png',        note: '' },
+  { id: 'plasticbarrel', label: 'Plastic Barrel', img: 'plasticbarrel.png', note: '2 Color Variations, Same trigger. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
+  { id: 'metalbarrel',   label: 'Metal Barrel',   img: 'metalbarrel.png',   note: 'They all look the same. Trigger is inside the barrel. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
+  { id: 'vests',         label: 'Vests',          img: 'vests.png',         note: 'Do NOT injure/shoot/kill subject — the vest will detonate. Can Stand/Crouch around the device but do NOT walk or run near the trigger.' },
+  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png',      note: '' },
 ];
 
-// All variation steps keyed by "catid_varN"
+// Variation notes
+const varNotes = {
+  plastic_1: 'Moveable',
+  plastic_2: 'Not Moveable',
+  plastic_3: 'Not Moveable',
+  plastic_4: 'Not Moveable',
+  plastic_5: 'Not Moveable',
+
+  fuel_1: 'Not Moveable',
+  fuel_2: 'Not Moveable',
+  fuel_3: 'Not Moveable',
+  fuel_4: 'Moveable',
+  fuel_5: 'Not Moveable',
+
+  cardboard_1: 'Not Moveable',
+  cardboard_2: 'Not Moveable',
+  cardboard_3: 'Not Moveable',
+  cardboard_4: 'Not Moveable',
+  cardboard_5: 'Not Moveable',
+
+  cinderblock_1: 'Not Moveable',
+  cinderblock_2: 'Not Moveable',
+  cinderblock_3: 'Moveable',
+  cinderblock_4: 'Not Moveable',
+  cinderblock_5: 'Not Moveable',
+
+  bucket_1: '',
+  bucket_2: '',
+  bucket_3: '',
+  bucket_4: '',
+  bucket_5: '',
+
+  plasticbarrel_1: 'Not Moveable',
+  plasticbarrel_2: 'Not Moveable',
+  plasticbarrel_3: 'Not Moveable',
+  plasticbarrel_4: 'Not Moveable',
+  plasticbarrel_5: 'Moveable',
+
+  metalbarrel_1: 'Not Moveable',
+  metalbarrel_2: 'Not Moveable',
+  metalbarrel_3: 'Not Moveable',
+  metalbarrel_4: 'Not Moveable',
+  metalbarrel_5: 'Not Moveable',
+
+  vests_1: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
+  vests_2: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
+  vests_3: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
+  vests_4: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
+  vests_5: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
+
+  vehicles_1: '',
+  vehicles_2: '',
+  vehicles_3: '',
+  vehicles_4: '',
+  vehicles_5: '',
+};
+
 const stepData = {
   plastic_1:       ['Green','Long Black','Blue','Black','Red','Yellow','Long Red'],
   plastic_2:       ['Long Red','Black','Yellow','Blue','Green','Red','Long Black'],
@@ -344,20 +377,19 @@ const stepData = {
   vehicles_5:      ['Red','Long Black','Blue','Black','Yellow','Green','Long Red'],
 };
 
-function getSteps(catId, varNum) {
-  const key = `${catId}_${varNum}`;
-  return stepData[key] || Array(7).fill('—');
-}
-
 function varImg(catId, n) { return `${catId}_var${n}.png`; }
 
-// Build category pages
+// Build pages
 const catalogView = document.getElementById('catalog-view');
 
 categories.forEach(cat => {
   const page = document.createElement('div');
   page.className = 'page';
   page.id = `page-${cat.id}`;
+
+  const noteHtml = cat.note
+    ? `<div class="cat-notes-static">${cat.note}</div>`
+    : '';
 
   page.innerHTML = `
     <div class="cat-hero">
@@ -366,7 +398,7 @@ categories.forEach(cat => {
       </div>
       <div class="cat-hero-info">
         <h2>${cat.label}</h2>
-        <textarea class="cat-notes" placeholder="Add notes about ${cat.label}…"></textarea>
+        ${noteHtml}
       </div>
     </div>
     <div class="section-label">Variations</div>
@@ -401,7 +433,7 @@ document.getElementById('tab-bar').addEventListener('click', e => {
   catalogView.style.display = '';
 });
 
-// Variation card → detail
+// Variation → detail
 catalogView.addEventListener('click', e => {
   const card = e.target.closest('.var-card');
   if (!card) return;
@@ -409,13 +441,23 @@ catalogView.addEventListener('click', e => {
   const catId    = card.dataset.cat;
   const catLabel = card.dataset.label;
   const varNum   = card.dataset.var;
+  const noteKey  = `${catId}_${varNum}`;
 
   document.getElementById('detail-title').textContent = `${catLabel} — Variation ${varNum}`;
   document.getElementById('detail-sub').textContent   = `Category: ${catLabel}  ·  Variation ${varNum} of 5`;
-  document.getElementById('detail-notes').value = '';
+
+  const noteEl = document.getElementById('detail-notes');
+  const noteText = varNotes[noteKey] || '';
+  if (noteText) {
+    noteEl.textContent = noteText;
+    noteEl.style.display = 'block';
+  } else {
+    noteEl.style.display = 'none';
+  }
+
   document.getElementById('back-btn').dataset.cat = catId;
 
-  const steps = getSteps(catId, varNum);
+  const steps = stepData[noteKey] || Array(7).fill('—');
   const list = document.getElementById('detail-list');
   list.innerHTML = steps.map((step, i) =>
     `<li><span class="num">${i+1}</span>Step ${i+1} — ${step}</li>`
@@ -425,7 +467,7 @@ catalogView.addEventListener('click', e => {
   document.getElementById('detail-page').classList.add('active');
 });
 
-// Back button
+// Back
 document.getElementById('back-btn').addEventListener('click', () => {
   document.getElementById('detail-page').classList.remove('active');
   catalogView.style.display = '';
