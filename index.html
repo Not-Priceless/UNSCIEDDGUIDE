@@ -254,11 +254,11 @@ const categories = [
   { id: 'fuel',          label: 'Fuel',           img: 'fuel.png',          note: 'Trigger is always on the front face. Lay Down.' },
   { id: 'cardboard',     label: 'Cardboard',      img: 'cardboard.png',     note: 'Trigger is inside the box. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
   { id: 'cinderblock',   label: 'Cinder Block',   img: 'cinderblock.png',   note: 'They all look the same. Trigger is inside the block. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
-  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png',        note: '' },
+  { id: 'bucket',        label: 'Bucket',         img: 'bucket.png',        note: 'Open the lid very carefully.' },
   { id: 'plasticbarrel', label: 'Plastic Barrel', img: 'plasticbarrel.png', note: '2 Color Variations, Same trigger. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
   { id: 'metalbarrel',   label: 'Metal Barrel',   img: 'metalbarrel.png',   note: 'They all look the same. Trigger is inside the barrel. Can Stand/Crouch around the device — do NOT walk or run near the trigger.' },
   { id: 'vests',         label: 'Vests',          img: 'vests.png',         note: 'Do NOT injure/shoot/kill subject — the vest will detonate. Can Stand/Crouch around the device but do NOT walk or run near the trigger.' },
-  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png',      note: '' },
+  { id: 'vehicles',      label: 'Vehicles',       img: 'vehicles.png',      note: 'Trigger is the same. Location may change.' },
 ];
 
 // Variation notes
@@ -311,17 +311,17 @@ const varNotes = {
   vests_4: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
   vests_5: 'Handcuff Subject. DO NOT MOVE. Remember to detach the device once defused.',
 
-  vehicles_1: '',
-  vehicles_2: '',
-  vehicles_3: '',
-  vehicles_4: '',
-  vehicles_5: '',
+  vehicles_1: 'Not Moveable',
+  vehicles_2: 'Moveable',
+  vehicles_3: 'Moveable',
+  vehicles_4: 'Moveable',
+  vehicles_5: 'Not Moveable',
 };
 
 const stepData = {
   plastic_1:       ['Green','Long Black','Blue','Black','Red','Yellow','Long Red'],
   plastic_2:       ['Long Red','Black','Yellow','Blue','Green','Red','Long Black'],
-  plastic_3:       ['Yellow','Long Black','Black','Blue','Green','Long Red','—'],
+  plastic_3:       ['Yellow','Long Black','Black','Blue', 'Red', 'Green','Long Red'],
   plastic_4:       ['Black','Blue','Long Red','Red','Long Black','Yellow','Green'],
   plastic_5:       ['Green','Long Black','Black','Blue','Yellow','Long Red','Red'],
 
